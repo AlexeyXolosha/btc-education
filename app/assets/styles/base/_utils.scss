@@ -1,0 +1,26 @@
+.flex {
+  display: flex;
+}
+
+.ai-center {
+  align-items: center;
+}
+
+.jc-between {
+  justify-content: space-between;
+}
+
+button,
+.button {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+@for $i from 1 through 68 {
+  .gap--#{$i} {
+    gap: $i * 1px;
+  }
+}

@@ -1,0 +1,23 @@
+.header {
+  &-inner {
+    background-color: $white;
+    padding: 32px 40px;
+  }
+
+  &-top {
+    margin-bottom: 20px;
+  }
+
+  &-left {
+    margin-right: 25px;
+    flex-shrink: 0;
+  }
+
+  &-button {
+    width: 181px;
+  }
+
+  &-search-wrapper {
+    margin-right: 28px;
+  }
+}
