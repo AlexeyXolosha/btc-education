@@ -1,6 +1,6 @@
 import {useCachedData} from "~/composables/fetch/useCashedData.js";
 
-export const useFetchHook = async (url, options, fetchKey, ttl) => {
+export const useFetchHook = async (url, options, fetchKey, ttl, transform) => {
     const config = useRuntimeConfig();
     const key = fetchKey;
     const cache = useCachedData(key)
@@ -22,7 +22,8 @@ export const useFetchHook = async (url, options, fetchKey, ttl) => {
         cache.setLoading(res.pending.value)
         cache.setError(res.error.value)
         if (res.data.value != null && res.data.value !== cache.data.value) {
-            cache.set(res.data.value, ttl)
+            const transformed = transform ? transform(res.data.value) : res.data.value
+            cache.set(transformed, ttl)
         }
     }
 

@@ -11,15 +11,15 @@
             :pagination="{ clickable: true }"
             :modules="modules"
         >
-          <SwiperSlide v-for="item in data?.data.slice(0, 3)" :key="item?.id" class="hero-slide__content">
+          <SwiperSlide v-for="item in slides" :key="item.id" class="hero-slide__content">
 
             <div class="hero-slide__image">
-              <img :src="apiURL + item?.attributes?.images?.desktop?.src" alt="">
+              <img :src="apiURL + item.imageDesktop" alt="">
             </div>
 
             <div class="hero-slide__info">
-              <h2 class="hero-slide__title">{{ item?.attributes?.text?.title }}</h2>
-              <div class="hero-slide__text">{{ item?.attributes?.text?.text }}</div>
+              <h2 class="hero-slide__title">{{ item.title }}</h2>
+              <div class="hero-slide__text">{{ item.description }}</div>
             </div>
 
           </SwiperSlide>
@@ -44,6 +44,8 @@ import {useCachedData} from "~/composables/fetch/useCashedData.js";
 
 const {apiURL} = inject("useParent");
 const {data, loading, error} = useCachedData("slider-hero");
+
+const slides = computed(() => data.value?.data?.slice(0, 3) ?? []);
 
 const modules = [Pagination];
 </script>
