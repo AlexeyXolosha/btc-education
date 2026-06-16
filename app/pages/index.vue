@@ -1,7 +1,8 @@
 <template>
   <NuxtLayout name="hero">
 
-      <slider-component />
+    <slider-component/>
+    <product-slider-component :service="HERO_CONTENT.PRODUCT_HITS"/>
 
   </NuxtLayout>
 </template>

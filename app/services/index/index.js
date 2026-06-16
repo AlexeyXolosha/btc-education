@@ -8,13 +8,18 @@ export default {
             '/include/banners/slider/',
             {method: 'GET', lazy: true},
             'slider-hero',
-            30000,
+            null,
             (raw) => ({...raw, data: raw.data?.map(sliderDTO)})
         )
     },
 
     async GET_HERO_ADVANTAGES() {
         return await useFetchHook('/include/mainpage/advantages/', {method: 'GET'}, 'advantages-hero')
-    }
+    },
+
+    PRODUCT_HITS: {
+        key: 'hits',
+        fetch: () => useFetchHook('/include/mainpage/hit/hit/', {method: 'GET', lazy: true}, 'hits'),
+    },
 
 }

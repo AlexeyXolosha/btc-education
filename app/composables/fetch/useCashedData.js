@@ -6,6 +6,7 @@ export const useCachedData = (key) => {
     const errors = useState('storage:errors', () => ({}))
     const expires = useState('storage:expires', () => ({}))
 
+    // [  ]
     const isStale = () => {
         const exp = expires.value[key]
         return exp != null && Date.now() > exp
@@ -18,7 +19,7 @@ export const useCachedData = (key) => {
 
     const set = (value, ttl = DEFAULT_TTL) => {
         storage.value[key] = value
-        expires.value[key] = ttl ? Date.now() + ttl : null // null = свежо бессрочно
+        expires.value[key] = ttl ? Date.now() + ttl : null
     }
 
     const setLoading = (v) => {
