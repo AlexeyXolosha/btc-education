@@ -1,22 +1,28 @@
 <template>
   <nav class="tabs">
     <ul class="tabs__list">
-      <li @click="fetchProduct(item?.links?.self)" :class="{ 'is-active': item?.id === activeId }" class="tabs__item" v-for="item in data?.data" :key="item?.id">
+      <li
+          v-for="item in data?.data"
+          :key="item?.id"
+          @click="fetchProduct(item)"
+          :class="{ 'is-active': item?.id === activeCategory }"
+          class="tabs__item"
+      >
         {{ item?.attributes?.name }}
-
       </li>
     </ul>
   </nav>
 </template>
 
 <script setup>
-import {useFetchClient} from "~/composables/fetch/useFetchClient.js";
+import {categoryCompose} from "~/composables/compose/category.compose.js";
 
 const props = defineProps(["data"]);
-const { execute } = await useFetchClient(props?.data?.data?.[0]?.links?.self, { method: "GET", lazy: true }, "product");
-const fetchProduct = (url) => execute(url, true);
-</script>
+const sliderCacheKey = inject('sliderCacheKey');
+const productKey = `${sliderCacheKey}:product`;
 
+const { activeCategory, fetchProduct } = categoryCompose(productKey);
+</script>
 <style lang="scss" scoped>
 .tabs {
   &__list {

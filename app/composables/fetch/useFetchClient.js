@@ -1,10 +1,9 @@
 import {useCachedData} from "~/composables/fetch/useCashedData.js"
 
-export const useFetchClient = async (url, options = {}, fetchKey, ttl, transform) => {
-    const config = useRuntimeConfig();
-    const key = fetchKey;
+export const useFetchClient = (url, options = {}, fetchKey, ttl, transform) => {
+    const config = useRuntimeConfig()
+    const key = fetchKey
     const cache = useCachedData(key)
-    const lazy = options?.lazy ?? false
     const _fetch = useRequestFetch()
 
     const execute = async (overrideUrl, force = false) => {
@@ -35,13 +34,11 @@ export const useFetchClient = async (url, options = {}, fetchKey, ttl, transform
         return transformed
     }
 
-    if (!lazy) await execute()
-
     return {
         data: cache.data,
         error: cache.error,
         loading: cache.loading,
-        refresh: () => execute(true),
+        refresh: () => execute(undefined, true),
         execute,
     }
 }

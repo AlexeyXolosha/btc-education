@@ -9,7 +9,7 @@ import {useFetchHook} from "~/composables/fetch/useFetchHook.js";
 const props = defineProps(['template'])
 const {currentComponent} = useLoaderComponent('header', props.template);
 
-useFetchHook('/include/menu/main/', { method: 'GET' }, 'header-popular')
+await useFetchHook('/include/menu/main/', {method: 'GET'}, 'header-popular')
 </script>
 
 <style lang="scss" scoped>

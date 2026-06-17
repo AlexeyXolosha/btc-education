@@ -6,7 +6,7 @@ export default {
     async GET_HERO_SLIDER() {
         return await useFetchHook(
             '/include/banners/slider/',
-            {method: 'GET', lazy: true},
+            {method: 'GET'},
             'slider-hero',
             null,
             (raw) => ({...raw, data: raw.data?.map(sliderDTO)})
@@ -19,7 +19,7 @@ export default {
 
     PRODUCT_HITS: {
         key: 'hits',
-        fetch: () => useFetchHook('/include/mainpage/hit/hit/', {method: 'GET', lazy: true}, 'hits'),
+        fetch: () => useFetchHook('/include/mainpage/hit/hit/', {method: 'GET'}, 'hits'),
     },
 
 }
