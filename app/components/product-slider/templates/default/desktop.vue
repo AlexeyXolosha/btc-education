@@ -1,20 +1,22 @@
 <template>
   <section class="section products">
     <div class="container">
+
       <div class="products__head flex column gap--16">
-        <h2 class="title-h2">{{ data?.meta?.title }}</h2>
-        <common-tabs :data="data"></common-tabs>
+        <h2 class="title-h2">{{ categories?.meta?.title }}</h2>
+        <common-tabs :data="categories"></common-tabs>
       </div>
 
       <div class="products__swiper">
-       <ClientOnly>
-         <Swiper :slides-per-view="6" :space-between="24">
-           <SwiperSlide class="products__slide" v-for="item in dataProduct?.data" :key="item?.id">
-             <product-card-component :data="item"></product-card-component>
-           </SwiperSlide>
-         </Swiper>
-       </ClientOnly>
+        <ClientOnly>
+          <Swiper :slides-per-view="6" :space-between="24">
+            <SwiperSlide class="products__slide" v-for="item in products?.data" :key="item?.id">
+              <product-card-component :data="item"></product-card-component>
+            </SwiperSlide>
+          </Swiper>
+        </ClientOnly>
       </div>
+
     </div>
   </section>
 </template>
@@ -30,13 +32,12 @@ import {categoryCompose} from "~/composables/compose/category.compose.js";
 const cacheKey = inject('sliderCacheKey');
 const productKey = `${cacheKey}:product`;
 
-const {data, loading, error} = useCachedData(cacheKey);
-const {fetchInitial} = categoryCompose(productKey);
-const {data: dataProduct, loading: loadingProduct} = useCachedData(productKey);
+const {data: categories} = useCachedData(cacheKey);
+const {data: products, loading, fetchInitial} = categoryCompose(productKey);
 
-const firstCategory = data.value?.data?.[0];
+const firstCategory = categories.value?.data?.[0];
 
-if (firstCategory && !dataProduct.value) {
+if (firstCategory && !products.value) {
   await fetchInitial(firstCategory.links.self, firstCategory.id);
 }
 </script>

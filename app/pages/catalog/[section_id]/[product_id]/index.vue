@@ -1,6 +1,6 @@
 <template>
   <NuxtLayout name="hero">
-  Product
+    <product-detail-component />
   </NuxtLayout>
 </template>
 
@@ -9,7 +9,7 @@ import {useFetchHook} from "~/composables/fetch/useFetchHook.js";
 
 const route = useRoute();
 
-const {data} = await useFetchHook(route?.fullPath, {method: "GET"}, "DETAIL_PAGE")
+await useFetchHook(route?.fullPath, {method: "GET"}, "DETAIL_PAGE")
 </script>
 
 <style lang="scss" scoped>

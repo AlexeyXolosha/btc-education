@@ -3,6 +3,8 @@
 
     <slider-component/>
     <product-slider-component :service="HERO_CONTENT.PRODUCT_HITS"/>
+    <product-slider-component :service="HERO_CONTENT.PRODUCT_STOCK"/>
+    <product-slider-component :service="HERO_CONTENT.PRODUCT_RECOMMENDATIONS"/>
 
   </NuxtLayout>
 </template>

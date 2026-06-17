@@ -23,6 +23,7 @@ const productKey = `${sliderCacheKey}:product`;
 
 const { activeCategory, fetchProduct } = categoryCompose(productKey);
 </script>
+
 <style lang="scss" scoped>
 .tabs {
   &__list {

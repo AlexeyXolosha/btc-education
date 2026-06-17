@@ -22,4 +22,14 @@ export default {
         fetch: () => useFetchHook('/include/mainpage/hit/hit/', {method: 'GET'}, 'hits'),
     },
 
+    PRODUCT_STOCK: {
+        key: 'stock',
+        fetch: () => useFetchHook('/include/mainpage/hit/stock/', {method: 'GET'}, 'stock'),
+    },
+
+    PRODUCT_RECOMMENDATIONS: {
+        key: 'recommendations',
+        fetch: () => useFetchHook('/include/mainpage/hit/recommend/', {method: 'GET'}, 'recommendations'),
+    },
+
 }

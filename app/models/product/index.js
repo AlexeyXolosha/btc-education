@@ -28,5 +28,9 @@ export const productDTO = (rawData) => {
 }
 
 export const ProductDetailDTO = (rawData) => {
-    
+    helperDto(rawData, ({id, meta, attributes, brand}) => {
+        const metaInfo = meta || {};
+        const name = attributes?.name || "";
+        const stickers = attributes?.stickers || [];
+    })
 }

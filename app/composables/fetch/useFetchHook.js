@@ -1,4 +1,4 @@
-import { useCachedData } from "~/composables/fetch/useCashedData.js";
+import {useCachedData} from "~/composables/fetch/useCashedData.js";
 
 export const useFetchHook = async (url, options, fetchKey, ttl, transformFunc) => {
     const config = useRuntimeConfig();
@@ -27,7 +27,7 @@ export const useFetchHook = async (url, options, fetchKey, ttl, transformFunc) =
         cache.setError(res.error.value);
     };
 
-    watch([res.pending, res.error], syncStatus, { immediate: true });
+    watch([res.pending, res.error], syncStatus, {immediate: true});
 
     return {
         data: res.data,

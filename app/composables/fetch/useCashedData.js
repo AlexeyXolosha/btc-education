@@ -1,4 +1,4 @@
-const DEFAULT_TTL = 1000 * 60 * 20;
+const DEFAULT_TTL = 1000 * 60 * 5;
 
 export const useCachedData = (key) => {
     const storage = useState('storage:data', () => ({}))
@@ -6,7 +6,6 @@ export const useCachedData = (key) => {
     const errors = useState('storage:errors', () => ({}))
     const expires = useState('storage:expires', () => ({}))
 
-    // [  ]
     const isStale = () => {
         const exp = expires.value[key]
         return exp != null && Date.now() > exp
