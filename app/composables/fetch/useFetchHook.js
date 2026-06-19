@@ -13,11 +13,11 @@ export const useFetchHook = async (url, options, fetchKey, ttl, transformFunc) =
         method: options?.method || 'GET',
         body: options?.body || undefined,
 
-        getCachedData: () => (cache.has() ? cache.data.value : undefined),
+        getCachedData: () => (cache.has(url) ? cache.data.value : undefined),
 
         transform: (fetchedData) => {
             const transformed = transformFunc ? transformFunc(fetchedData) : fetchedData;
-            cache.set(transformed, ttl);
+            cache.set(transformed, ttl, url);
             return transformed;
         }
     });

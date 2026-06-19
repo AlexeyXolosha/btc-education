@@ -8,7 +8,13 @@
     </li>
     <li class="header-action">
       <NuxtLink>
-        <i class="fa-regular fa-cart-arrow-down"></i>
+        <i class="fa-regular fa-layer-plus"></i>
+        <span>Избранное</span>
+      </NuxtLink>
+    </li>
+    <li class="header-action">
+      <NuxtLink>
+        <i class="fa-regular fa-cart-shopping"></i>
         <span>0</span>
       </NuxtLink>
     </li>
@@ -35,6 +41,7 @@
 .header-action {
   a {
     display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 5px;
     cursor: pointer;

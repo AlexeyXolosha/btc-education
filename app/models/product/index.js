@@ -28,9 +28,31 @@ export const productDTO = (rawData) => {
 }
 
 export const ProductDetailDTO = (rawData) => {
-    helperDto(rawData, ({id, meta, attributes, brand}) => {
-        const metaInfo = meta || {};
+    return helperDto(rawData, ({id, meta, attributes, properties}) => {
+        const breadcrumbs = meta?.breadcrumb || [];
         const name = attributes?.name || "";
-        const stickers = attributes?.stickers || [];
+        const stikers = attributes?.stikers || [];
+        const article = properties?.cml2Article?.value || "";
+
+        const brand = attributes?.brand[0]?.attributes || [];
+        const brandImage = brand?.images?.preview || "";
+
+        const images = attributes?.images?.more || [];
+
+        const tizers = attributes?.tizers || [];
+        const tabs = attributes?.tabs || {};
+
+        return {
+            id,
+            article,
+            breadcrumbs,
+            name,
+            stikers,
+            images,
+            tizers,
+            tabs,
+            brand,
+            brandImage
+        };
     })
 }

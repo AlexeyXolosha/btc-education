@@ -1,0 +1,14 @@
+<template>
+  <component :is="currentComponent"></component>
+</template>
+
+<script setup>
+import {useLoaderComponent} from "~/composables/useLoaderComponent.js";
+
+const props = defineProps(['template'])
+const {currentComponent} = useLoaderComponent('product-detail-parts', props.template);
+</script>
+
+<style lang="scss" scoped>
+
+</style>

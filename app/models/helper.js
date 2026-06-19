@@ -5,7 +5,7 @@ export const helperDto = (rawData, mapper) => {
     const attributes = rawData.attributes || {};
 
     /* Пропсы */
-    const properties = rawData.properties || {};
+    const properties = rawData?.attributes.properties || {};
     const brand = properties.properties || {};
 
     /* Продукт */
