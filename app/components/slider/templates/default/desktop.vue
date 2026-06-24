@@ -27,7 +27,6 @@
       </ClientOnly>
 
       <div class="hero-footer">
-        <cards-component template="hero-advantages"/>
       </div>
     </div>
 

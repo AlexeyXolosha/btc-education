@@ -1,7 +1,7 @@
 <template>
   <section class="hero">
     <div class="container">
-      <slider-component :items="data?.data" :slides-per-view="1" :gap="24" template="custom" :navigation="false"
+      <slider-component style="margin-bottom: 32px" :items="data?.data" :slides-per-view="1" :gap="24" template="custom" :navigation="false"
                         :autoplay="{ delay: 6000, pauseOnHover: false }" >
         <template #slide="{ item }">
           <div class="slider-item__content">
@@ -15,6 +15,8 @@
           </div>
         </template>
       </slider-component>
+
+      <cards-component template="hero-advantages"/>
     </div>
   </section>
 </template>
@@ -27,17 +29,29 @@ const {data, loading, error} = useCachedData("slider-hero");
 </script>
 
 <style lang="scss" scoped>
+.hero {
+  background: #F1F6FD;
+  padding-block: 50px;
+}
+
 .slider-item__content {
   position: relative;
   height: 310px;
   overflow: hidden;
   border-radius: $border-radius;
 
-  img {
-    width: 100%;
+  .image {
     height: 100%;
-    object-fit: cover;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
+
+
+
 
   .content {
     position: absolute;

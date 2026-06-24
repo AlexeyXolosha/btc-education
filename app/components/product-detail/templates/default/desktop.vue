@@ -6,7 +6,7 @@
       <product-detail-parts-component template="header"/>
 
       <!-- [Контент]   -->
-
+      <product-detail-parts-component template="content"/>
     </div>
 
   </section>

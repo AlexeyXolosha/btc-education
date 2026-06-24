@@ -10,6 +10,7 @@ export function useAutoplay(autoplay, { currentIndex, maxIndex, next, goTo, redu
             currentIndex.value >= maxIndex.value ? goTo(0) : next()
         }, cfg.value.delay)
     }
+
     const stop = () => { if (timer) { clearInterval(timer); timer = null } }
     const reset = () => { stop(); start() }
     const onHoverPause = () => { if (cfg.value?.pauseOnHover) stop() }
