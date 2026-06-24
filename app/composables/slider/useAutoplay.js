@@ -11,6 +11,7 @@ export function useAutoplay(autoplay, { currentIndex, maxIndex, next, goTo, redu
         }, cfg.value.delay)
     }
     const stop = () => { if (timer) { clearInterval(timer); timer = null } }
+    const reset = () => { stop(); start() }
     const onHoverPause = () => { if (cfg.value?.pauseOnHover) stop() }
     const onHoverResume = () => { if (cfg.value?.pauseOnHover) start() }
     const onVisibility = () => { document.hidden ? stop() : start() }
@@ -18,5 +19,5 @@ export function useAutoplay(autoplay, { currentIndex, maxIndex, next, goTo, redu
     onMounted(() => { document.addEventListener('visibilitychange', onVisibility); start() })
     onBeforeUnmount(() => { document.removeEventListener('visibilitychange', onVisibility); stop() })
 
-    return { start, stop, onHoverPause, onHoverResume }
+    return { start, stop, reset, onHoverPause, onHoverResume }
 }

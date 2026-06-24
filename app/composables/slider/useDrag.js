@@ -1,24 +1,43 @@
+const AXIS_THRESHOLD = 8
+
 export function useDrag({ wrapper, translate, isDragging, slideStep, onStart, onSettle }) {
     const moved = ref(false)
-    let startX = 0, startTranslate = 0, pointerId = null
+    let startX = 0, startY = 0, startTranslate = 0, pointerId = null
+    let axis = null
 
     const onDown = (e) => {
-        isDragging.value = true; moved.value = false; pointerId = e.pointerId
-        wrapper.value.setPointerCapture(pointerId)
-        startX = e.clientX; startTranslate = translate.value
-        onStart?.()
+        pointerId = e.pointerId
+        startX = e.clientX; startY = e.clientY
+        startTranslate = translate.value
+        axis = null; moved.value = false
     }
     const onMove = (e) => {
-        if (!isDragging.value) return
-        const d = e.clientX - startX
-        if (Math.abs(d) > 5) moved.value = true
-        translate.value = startTranslate + d
+        if (pointerId == null) return
+        const dx = e.clientX - startX
+        const dy = e.clientY - startY
+
+        if (axis === null) {
+            if (Math.abs(dx) < AXIS_THRESHOLD && Math.abs(dy) < AXIS_THRESHOLD) return
+            axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y'
+            if (axis === 'x') {
+                isDragging.value = true
+                wrapper.value.setPointerCapture?.(pointerId)
+                onStart?.()
+            } else {
+                pointerId = null
+                return
+            }
+        }
+
+        moved.value = true
+        translate.value = startTranslate + dx
     }
     const onUp = () => {
-        if (!isDragging.value) return
-        isDragging.value = false
+        const wasDragging = isDragging.value
         if (pointerId != null) { wrapper.value.releasePointerCapture?.(pointerId); pointerId = null }
-        onSettle?.(slideStep.value ? Math.round(-translate.value / slideStep.value) : 0)
+        isDragging.value = false
+        axis = null
+        if (wasDragging) onSettle?.(slideStep.value ? Math.round(-translate.value / slideStep.value) : 0)
     }
     const onClickCapture = (e) => {
         if (moved.value) { e.stopPropagation(); e.preventDefault(); moved.value = false }

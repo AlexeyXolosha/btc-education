@@ -1,9 +1,5 @@
 <template>
-  <component :is="currentComponent">
-    <template v-for="(_, name) in $slots" #[name]="slotProps">
-      <slot :name="name" v-bind="slotProps ?? {}" />
-    </template>
-  </component>
+  <component :is="currentComponent"></component>
 </template>
 
 <script setup>
@@ -13,7 +9,7 @@ const config = useRuntimeConfig()
 const apiURL = config.public.BASE_URL;
 
 const props = defineProps(['template'])
-const {currentComponent} = useLoaderComponent('slider', props.template);
+const {currentComponent} = useLoaderComponent('hero', props.template);
 
 provide("useParent", {apiURL})
 </script>

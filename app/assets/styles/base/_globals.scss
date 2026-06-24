@@ -11,7 +11,7 @@ body {
 }
 
 .container {
-  max-width: calc($container + 50px * 2);
+  max-width: calc($container + $padding-inline * 2);
   margin-inline: auto;
   padding-inline: $padding-inline;
 }
