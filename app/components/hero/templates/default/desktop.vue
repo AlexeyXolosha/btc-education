@@ -50,9 +50,6 @@ const {data, loading, error} = useCachedData("slider-hero");
     }
   }
 
-
-
-
   .content {
     position: absolute;
     left: 72px;

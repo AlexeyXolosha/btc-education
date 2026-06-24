@@ -52,7 +52,8 @@ export const ProductDetailDTO = (rawData) => {
             tizers,
             tabs,
             brand,
-            brandImage
+            brandImage,
+            properties
         };
     })
 }
