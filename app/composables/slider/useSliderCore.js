@@ -1,21 +1,25 @@
+import {ref, watch, nextTick, onMounted, onBeforeUnmount} from 'vue';
+
 export function useSliderCore(wrapper, props, emit) {
     const translate = ref(0);
     const currentIndex = ref(props.modelValue || 0);
+    const viewIndex = ref(props.modelValue || 0);
     const isDragging = ref(false);
     const slideStep = ref(0);
     const maxTranslate = ref(0);
     const maxIndex = ref(0);
+    const viewSize = ref(null);
     let ro = null;
 
     const applyTranslate = (i) => {
         translate.value = Math.max(-maxTranslate.value, -i * slideStep.value)
     }
 
-    /* Перемещение к слайду  */
     const goTo = (index) => {
         const i = Math.max(0, Math.min(index, maxIndex.value))
         const changed = i !== currentIndex.value
         currentIndex.value = i
+        viewIndex.value = i
         applyTranslate(i)
         if (changed) {
             emit('update:modelValue', i);
@@ -23,22 +27,43 @@ export function useSliderCore(wrapper, props, emit) {
         }
     }
 
-    /* Функции перемещение к слайдам  */
+    const scrollTo = (index) => {
+        const i = Math.max(0, Math.min(index, maxIndex.value))
+        viewIndex.value = i
+        applyTranslate(i)
+    }
+
     const next = () => goTo(currentIndex.value + 1)
     const prev = () => goTo(currentIndex.value - 1)
 
-    /* Вызывается при монтировании и при каждом ресайзе, заново считает физические размеры */
+    const scrollNext = () => scrollTo(viewIndex.value + 1)
+    const scrollPrev = () => scrollTo(viewIndex.value - 1)
+
     const measure = () => {
         const el = wrapper.value
         if (!el?.children.length) return
-        const gap = parseFloat(getComputedStyle(el).columnGap) || 0
-        slideStep.value = el.children[0].offsetWidth + gap
-        maxTranslate.value = Math.max(0, el.scrollWidth - el.parentElement.clientWidth)
+
+        const isColumn = props.column
+        const style = getComputedStyle(el)
+        const gap = parseFloat(isColumn ? style.rowGap : style.columnGap) || 0
+
+        const first = el.children[0]
+        const itemSize = isColumn ? first.offsetHeight : first.offsetWidth
+        slideStep.value = itemSize + gap
+
+        const spv = Math.max(1, parseFloat(props.slidesPerView) || 1)
+        viewSize.value = isColumn ? itemSize * spv + gap * (spv - 1) : null
+
+        const full = isColumn ? el.scrollHeight : el.scrollWidth
+        const view = isColumn ? viewSize.value : el.parentElement.clientWidth
+        maxTranslate.value = Math.max(0, full - view)
+
         maxIndex.value = slideStep.value ? Math.round(maxTranslate.value / slideStep.value) : 0
         if (currentIndex.value > maxIndex.value) currentIndex.value = maxIndex.value
-        applyTranslate(currentIndex.value)
-    }
+        if (viewIndex.value > maxIndex.value) viewIndex.value = maxIndex.value
 
+        applyTranslate(viewIndex.value)
+    }
 
     onMounted(() => {
         measure()
@@ -49,6 +74,16 @@ export function useSliderCore(wrapper, props, emit) {
     onBeforeUnmount(() => ro?.disconnect())
 
     watch(() => props.items?.length, () => nextTick(measure))
+    watch(() => props.column, () => nextTick(measure))
+    watch(() => props.slidesPerView, () => nextTick(measure))
+    watch(() => props.modelValue, (newVal) => {
+        if (newVal !== undefined && newVal !== currentIndex.value) {
+            goTo(newVal);
+        }
+    })
 
-    return {translate, currentIndex, isDragging, slideStep, maxIndex, goTo, next, prev, measure}
+    return {
+        translate, currentIndex, viewIndex, isDragging, slideStep, maxTranslate, maxIndex, viewSize,
+        goTo, scrollTo, next, prev, scrollNext, scrollPrev, measure
+    }
 }

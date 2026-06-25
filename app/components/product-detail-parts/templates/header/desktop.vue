@@ -65,6 +65,7 @@ const {data} = inject("useParent");
 
 <style lang="scss" scoped>
 .header-detail {
+  margin-bottom: 68px;
   .breadcrumbs {
     margin-bottom: 20px;
 

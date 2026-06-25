@@ -1,6 +1,27 @@
-export function useNavigation({currentIndex, maxIndex, prev, next}) {
-    const canPrev = computed(() => currentIndex.value > 0)
-    const canNext = computed(() => currentIndex.value < maxIndex.value)
+export function useNavigation({
+                                  currentIndex,
+                                  viewIndex,
+                                  maxIndex,
+                                  scrollOnly,
+                                  prev,
+                                  next,
+                                  scrollPrev,
+                                  scrollNext
+                              }) {
+    const targetIndex = computed(() =>
+        scrollOnly?.value ? viewIndex.value : currentIndex.value
+    );
 
-    return {canPrev, canNext, prev, next}
+    const canPrev = computed(() => targetIndex.value > 0);
+    const canNext = computed(() => targetIndex.value < maxIndex.value);
+
+    const onPrev = () => {
+        scrollOnly?.value ? scrollPrev() : prev();
+    };
+
+    const onNext = () => {
+        scrollOnly?.value ? scrollNext() : next();
+    };
+
+    return { canPrev, canNext, onPrev, onNext };
 }

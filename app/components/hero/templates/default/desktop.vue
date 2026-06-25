@@ -1,7 +1,7 @@
 <template>
   <section class="hero">
     <div class="container">
-      <slider-component style="margin-bottom: 32px" :items="data?.data" :slides-per-view="1" :gap="24" template="custom" :navigation="false"
+      <slider-component style="margin-bottom: 32px" :items="data?.data" :slides-per-view="1" :gap="24" template="custom" :navigation="true"
                         :autoplay="{ delay: 6000, pauseOnHover: false }" >
         <template #slide="{ item }">
           <div class="slider-item__content">
