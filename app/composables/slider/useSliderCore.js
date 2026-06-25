@@ -54,7 +54,7 @@ export function useSliderCore(wrapper, props, emit) {
         const view = isColumn ? el.parentElement.clientHeight : el.parentElement.clientWidth
         maxTranslate.value = Math.max(0, full - view)
 
-        maxIndex.value = slideStep.value ? Math.round(maxTranslate.value / slideStep.value) : 0
+        maxIndex.value = slideStep.value ? Math.ceil(maxTranslate.value / slideStep.value) : 0
         if (currentIndex.value > maxIndex.value) currentIndex.value = maxIndex.value
         if (viewIndex.value > maxIndex.value) viewIndex.value = maxIndex.value
 

@@ -8,13 +8,14 @@
       </div>
 
       <div class="products__swiper">
-        <ClientOnly>
-          <Swiper :slides-per-view="6" :space-between="24">
-            <SwiperSlide class="products__slide" v-for="item in products?.data" :key="item?.id">
-              <product-card-component :data="item"></product-card-component>
-            </SwiperSlide>
-          </Swiper>
-        </ClientOnly>
+        <CustomSlider :slides-per-view="6"
+                       :gap="24"
+                       :items="products?.data">
+          <template #slide="{ item, index }">
+            <product-card-component :data="item"></product-card-component>
+          </template>
+        </CustomSlider>
+
       </div>
 
     </div>

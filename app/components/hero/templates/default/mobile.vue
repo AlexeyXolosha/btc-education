@@ -16,8 +16,6 @@
           </div>
         </template>
       </custom-slider>
-
-      <cards-component template="hero-advantages"/>
     </div>
   </section>
 </template>

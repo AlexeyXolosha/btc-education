@@ -51,7 +51,7 @@ const props = defineProps(["items"])
         content: "";
         flex-grow: 1;
         border-bottom: 1px dashed $black-40;
-        margin: 0 12px;
+        margin: 0 8px;
       }
     }
 

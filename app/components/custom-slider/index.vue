@@ -1,7 +1,7 @@
 <template>
   <div
       class="slider"
-      :class="{ 'is-column': column }"
+      :class="{ 'is-column': column, 'is-reduced': reducedMotion }"
       :data-sw="uid"
       @mouseenter="onHoverPause"
       @mouseleave="onHoverResume"
@@ -64,9 +64,9 @@ const props = defineProps({
   gap: {type: Number, default: 16},
   column: {type: Boolean, default: false},
   autoplay: {type: [Boolean, Object], default: false},
-  pagination: {type: Boolean, default: true},
+  pagination: {type: Boolean, default: false},
   modelValue: {type: Number, default: 0},
-  navigation: {type: [Boolean, Object], default: true},
+  navigation: {type: [Boolean, Object], default: false},
 })
 
 const emit = defineEmits(['update:modelValue', 'slide-change']);
@@ -222,6 +222,10 @@ const onSelect = (i) => {
       cursor: grabbing;
       user-select: none;
     }
+  }
+
+  &.is-reduced &-wrapper {
+    transition: none;
   }
 
   &-item {
