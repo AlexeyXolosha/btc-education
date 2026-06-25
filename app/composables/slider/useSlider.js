@@ -15,13 +15,15 @@ export function useSlider(props, emit) {
     const navObject = computed(() =>
         typeof props.navigation === 'object' && props.navigation !== null ? props.navigation : null
     );
-    const hasNavigation = computed(() => props.navigation !== false);
     const isScrollOnly = computed(() => !!navObject.value?.scrollOnly);
 
     const {
         translate, currentIndex, viewIndex, isDragging, slideStep, maxTranslate, maxIndex,
         goTo, scrollTo, next, prev, scrollNext, scrollPrev
     } = useSliderCore(wrapper, props, emit);
+
+    // навигация имеет смысл, только если есть куда листать (замер из реальной геометрии)
+    const hasNavigation = computed(() => props.navigation !== false && maxIndex.value > 0);
 
     const {uid, css} = useBreakpoints(props);
     useHead({style: [{innerHTML: css}]});
