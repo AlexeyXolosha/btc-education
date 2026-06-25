@@ -7,16 +7,13 @@
         <common-tabs :data="categories"></common-tabs>
       </div>
 
-      <div class="products__swiper">
-        <CustomSlider :slides-per-view="6"
-                       :gap="24"
-                       :items="products?.data">
-          <template #slide="{ item, index }">
-            <product-card-component :data="item"></product-card-component>
-          </template>
-        </CustomSlider>
-
-      </div>
+      <CustomSlider :slides-per-view="6"
+                    :gap="24"
+                    :items="products?.data">
+        <template #slide="{ item, index }">
+          <product-card-component :data="item"></product-card-component>
+        </template>
+      </CustomSlider>
 
     </div>
   </section>
