@@ -6,10 +6,7 @@
       @mouseenter="onHoverPause"
       @mouseleave="onHoverResume"
   >
-    <div
-        class="slider-viewport"
-        :style="{ height: column && viewSize ? `${viewSize}px` : null }"
-    >
+    <div class="slider-viewport">
       <div
           class="slider-wrapper"
           ref="wrapper"
@@ -87,7 +84,7 @@ const isScrollOnly = computed(() => {
 });
 
 const {
-  translate, currentIndex, viewIndex, isDragging, slideStep, maxTranslate, maxIndex, viewSize,
+  translate, currentIndex, viewIndex, isDragging, slideStep, maxTranslate, maxIndex,
   goTo, scrollTo, next, prev, scrollNext, scrollPrev
 } = useSliderCore(wrapper, props, emit)
 
@@ -166,6 +163,7 @@ const onSelect = (i) => {
       flex: 0 0 auto;
       width: 100%;
       min-height: 0;
+      height: calc(var(--sw-item-h) * var(--spv) + var(--sw-gap, 16px) * (var(--spv) - 1));
     }
 
     .slider-wrapper {

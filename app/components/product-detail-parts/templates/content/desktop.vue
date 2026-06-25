@@ -84,6 +84,7 @@ const activeIndex = ref(0);
   }
 
   .miniature-slide {
+    --sw-item-h: 76px;
     --sw-nav-width: 100%;
     --sw-nav-height: 32px;
     --sw-border-nav: 2px solid rgba(14, 108, 221, 0.20);

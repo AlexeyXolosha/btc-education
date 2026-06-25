@@ -148,6 +148,7 @@ goTo(i) ──▶ currentIndex = clamp(i) ──▶ applyTranslate(i)
 | `items`         | `Array`             | `[]`         | Данные слайдов (`v-for`). |
 | `slidesPerView` | `Number \| String`  | `2`          | Сколько слайдов видно одновременно. |
 | `gap`           | `Number`            | `16`         | Отступ между слайдами, px. |
+| `column`        | `Boolean`           | `false`      | Вертикальная ось. Требует CSS-переменную `--sw-item-h` у потребителя (см. [Column-режим](#column-режим-вертикальный-и-высота-viewport)). |
 | `autoplay`      | `Boolean \| Object` | `false`      | `true` или `{ delay, pauseOnHover }`. |
 | `pagination`    | `Boolean`           | `true`       | Показывать буллеты. |
 | `navigation`    | `Boolean`           | `true`       | Показывать стрелки. |
@@ -191,6 +192,34 @@ goTo(i) ──▶ currentIndex = clamp(i) ──▶ applyTranslate(i)
 
 ## SSR
 Слайдер SSR-safe: `document`/`matchMedia`/`ResizeObserver` трогаются только внутри `onMounted`. `slidesPerView`/`gap` отдаются inline-переменными (рендерятся на сервере), поэтому первый кадр сразу корректный, без layout-shift и без генерации `<style>` на инстанс. Пагинация ждёт `mounted`, чтобы число буллетов не разошлось между сервером и клиентом.
+
+## Column-режим (вертикальный) и высота viewport
+
+Проп `column` переключает слайдер в вертикальную ось: `.slider-wrapper` становится `flex-direction: column`, сдвиг идёт через `translateY`, стрелки переставляются через `order` и иконки поворачиваются на 90°. Используется, например, в галерее товара (`product-detail-parts/.../content/desktop.vue` — лента миниатюр).
+
+### Высота viewport считается чистым CSS (без прыжка)
+
+Viewport в column-режиме должен показывать ровно `slidesPerView` слайдов и обрезать остальное по `overflow`. Раньше высота бралась из JS-измерения (`offsetHeight` первого слайда) и проставлялась inline-стилем **после** `onMounted` → первый кадр был без высоты, затем JS её проставлял → **layout-shift (прыжок)**.
+
+Теперь высота считается из CSS-переменных и присутствует уже в первом рендере (SSR + гидрация), поэтому прыжка нет:
+
+```scss
+.is-column .slider-viewport {
+  height: calc(var(--sw-item-h) * var(--spv) + var(--sw-gap, 16px) * (var(--spv) - 1));
+}
+```
+
+`--spv` и `--sw-gap` уже задаются обёрткой (`useBreakpoints`), а высоту одного слайда **`--sw-item-h` обязан задать потребитель**:
+
+```scss
+.miniature-slide {
+  --sw-item-h: 76px;   // высота слайда; без неё calc() невалиден и viewport схлопнется
+}
+```
+
+> ⚠️ **Условие применимости:** подход работает, только когда высота слайда фиксирована и известна в CSS. Это осознанный компромисс: посчитать высоту без JS нельзя, не зная высоту элемента. Дефолта у `--sw-item-h` намеренно нет — чтобы забытая переменная сразу бросалась в глаза, а не подставляла молча неверную высоту.
+
+`useSliderCore.measure()` для прокрутки берёт реальную высоту viewport (`parentElement.clientHeight`) — симметрично горизонтальному случаю (`clientWidth`). JS-расчёт высоты viewport (бывший `viewSize`) полностью удалён.
 
 ## Что нужно сделать (Roadmap)
 

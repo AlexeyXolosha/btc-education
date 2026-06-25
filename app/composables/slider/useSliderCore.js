@@ -8,7 +8,6 @@ export function useSliderCore(wrapper, props, emit) {
     const slideStep = ref(0);
     const maxTranslate = ref(0);
     const maxIndex = ref(0);
-    const viewSize = ref(null);
     let ro = null;
 
     const applyTranslate = (i) => {
@@ -51,11 +50,8 @@ export function useSliderCore(wrapper, props, emit) {
         const itemSize = isColumn ? first.offsetHeight : first.offsetWidth
         slideStep.value = itemSize + gap
 
-        const spv = Math.max(1, parseFloat(props.slidesPerView) || 1)
-        viewSize.value = isColumn ? itemSize * spv + gap * (spv - 1) : null
-
         const full = isColumn ? el.scrollHeight : el.scrollWidth
-        const view = isColumn ? viewSize.value : el.parentElement.clientWidth
+        const view = isColumn ? el.parentElement.clientHeight : el.parentElement.clientWidth
         maxTranslate.value = Math.max(0, full - view)
 
         maxIndex.value = slideStep.value ? Math.round(maxTranslate.value / slideStep.value) : 0
@@ -83,7 +79,7 @@ export function useSliderCore(wrapper, props, emit) {
     })
 
     return {
-        translate, currentIndex, viewIndex, isDragging, slideStep, maxTranslate, maxIndex, viewSize,
+        translate, currentIndex, viewIndex, isDragging, slideStep, maxTranslate, maxIndex,
         goTo, scrollTo, next, prev, scrollNext, scrollPrev, measure
     }
 }
