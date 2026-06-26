@@ -38,10 +38,10 @@
     </ul>
 
     <template v-if="hasNavigation">
-      <button :disabled="!canPrev" @click="handlePrevClick" class="slider-navigation prev">
+      <button v-if="canPrev" @click="handlePrevClick" class="slider-navigation prev">
         <i class="fa-regular fa-chevron-left"></i>
       </button>
-      <button :disabled="!canNext" @click="handleNextClick" class="slider-navigation next">
+      <button v-if="canNext" @click="handleNextClick" class="slider-navigation next">
         <i class="fa-regular fa-chevron-right"></i>
       </button>
     </template>
