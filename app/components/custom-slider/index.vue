@@ -16,6 +16,7 @@
           @pointermove="onMove"
           @pointerup="onUp"
           @pointercancel="onUp"
+          @dragstart.prevent
           @click.capture="onClickCapture"
       >
         <div class="slider-item" v-for="(item, index) in items" :key="index">
@@ -38,10 +39,20 @@
     </ul>
 
     <template v-if="hasNavigation">
-      <button v-if="canPrev" @click="handlePrevClick" class="slider-navigation prev">
+      <button
+          v-if="column || canPrev"
+          :disabled="!canPrev"
+          @click="handlePrevClick"
+          class="slider-navigation prev"
+      >
         <i class="fa-regular fa-chevron-left"></i>
       </button>
-      <button v-if="canNext" @click="handleNextClick" class="slider-navigation next">
+      <button
+          v-if="column || canNext"
+          :disabled="!canNext"
+          @click="handleNextClick"
+          class="slider-navigation next"
+      >
         <i class="fa-regular fa-chevron-right"></i>
       </button>
     </template>

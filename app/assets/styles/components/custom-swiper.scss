@@ -72,10 +72,12 @@
     will-change: transform;
     transition: transform 0.4s ease;
 
+    user-select: none;
+    -webkit-user-select: none;
+
     &.is-dragging {
       transition: none;
       cursor: grabbing;
-      user-select: none;
     }
   }
 
@@ -85,6 +87,7 @@
 
   &-item {
     flex: 0 0 calc((100% - (var(--spv) - 1) * var(--sw-gap, 16px)) / var(--spv));
+    min-width: 0;
     border-radius: var(--sw-item-radius, 0);
     overflow: var(--sw-item-overflow, visible);
   }

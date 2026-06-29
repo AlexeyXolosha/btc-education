@@ -1,4 +1,5 @@
 const AXIS_THRESHOLD = 8
+const SWIPE_THRESHOLD = 0.2
 
 export function useDrag({wrapper, translate, isDragging, slideStep, maxTranslate, column, onStart, onSettle}) {
     const moved = ref(false)
@@ -52,8 +53,22 @@ export function useDrag({wrapper, translate, isDragging, slideStep, maxTranslate
         }
         isDragging.value = false
         axis = null
+
         if (wasDragging) {
-            onSettle?.(slideStep.value ? Math.round(-translate.value / slideStep.value) : 0)
+            const step = slideStep.value
+            if (!step) { onSettle?.(0); return }
+
+            const base = Math.round(-startTranslate / step)
+            const moved = (startTranslate - translate.value) / step
+
+            let target = Math.round(-translate.value / step)
+
+            if (target === base) {
+                if (moved > SWIPE_THRESHOLD) target = base + 1
+                else if (moved < -SWIPE_THRESHOLD) target = base - 1
+            }
+
+            onSettle?.(target)
         }
     }
 
