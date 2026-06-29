@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <ul v-if="pagination && mounted" class="slider-pagination">
+    <ul v-if="pagination" class="slider-pagination">
       <li v-for="i in bullets" :key="i" class="slider-pagination-item">
         <button
             type="button"
@@ -84,4 +84,4 @@ const {
 } = useSlider(props, emit);
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" src="./sass/style.scss" scoped></style>

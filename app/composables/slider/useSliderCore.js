@@ -1,5 +1,3 @@
-import {ref, watch, nextTick, onMounted, onBeforeUnmount} from 'vue';
-
 export function useSliderCore(wrapper, props, emit) {
     const translate = ref(0);
     const currentIndex = ref(props.modelValue || 0);
@@ -7,7 +5,14 @@ export function useSliderCore(wrapper, props, emit) {
     const isDragging = ref(false);
     const slideStep = ref(0);
     const maxTranslate = ref(0);
-    const maxIndex = ref(0);
+
+    const baseSpv = () => {
+        const n = Number(props.slidesPerView)
+        return Number.isFinite(n) && n > 0 ? n : 1
+    }
+    const estimateMaxIndex = () => Math.max(0, Math.ceil((props.items?.length || 0) - baseSpv()))
+
+    const maxIndex = ref(estimateMaxIndex());
     let ro = null;
 
     const applyTranslate = (i) => {
@@ -61,15 +66,26 @@ export function useSliderCore(wrapper, props, emit) {
         applyTranslate(viewIndex.value)
     }
 
-    onMounted(() => {
-        measure()
-        ro = new ResizeObserver(measure)
+    const observe = () => {
+        if (!ro || !wrapper.value) return
+        ro.disconnect()
         ro.observe(wrapper.value)
+        const first = wrapper.value.children[0]
+        if (first) ro.observe(first)
+    }
+
+    onMounted(() => {
+        ro = new ResizeObserver(() => measure())
+        observe()
+        requestAnimationFrame(measure)
     })
 
     onBeforeUnmount(() => ro?.disconnect())
 
-    watch(() => props.items?.length, () => nextTick(measure))
+    watch(() => props.items?.length, () => {
+        maxIndex.value = estimateMaxIndex()
+        nextTick(() => { observe(); measure() })
+    })
     watch(() => props.column, () => nextTick(measure))
     watch(() => props.slidesPerView, () => nextTick(measure))
     watch(() => props.modelValue, (newVal) => {
