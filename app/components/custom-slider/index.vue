@@ -84,4 +84,4 @@ const {
 } = useSlider(props, emit);
 </script>
 
-<style lang="scss" src="./sass/style.scss" scoped></style>
+<style lang="scss" scoped></style>
