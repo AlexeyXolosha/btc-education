@@ -18,7 +18,7 @@ export function useSlider(props, emit) {
     const isScrollOnly = computed(() => !!navObject.value?.scrollOnly);
 
     const {
-        translate, currentIndex, viewIndex, isDragging, slideStep, maxTranslate, maxIndex,
+        translate, currentIndex, viewIndex, isDragging, snaps, maxTranslate, maxIndex,
         goTo, scrollTo, next, prev, scrollNext, scrollPrev
     } = useSliderCore(wrapper, props, emit);
 
@@ -37,7 +37,7 @@ export function useSlider(props, emit) {
         wrapper,
         translate,
         isDragging,
-        slideStep,
+        snaps,
         maxTranslate,
         column: computed(() => props.column),
         onStart: stopAutoplay,

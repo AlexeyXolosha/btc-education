@@ -1,7 +1,16 @@
 const AXIS_THRESHOLD = 8
 const SWIPE_THRESHOLD = 0.2
 
-export function useDrag({wrapper, translate, isDragging, slideStep, maxTranslate, column, onStart, onSettle}) {
+const nearest = (points, value) => {
+    let target = 0, best = Infinity
+    for (let i = 0; i < points.length; i++) {
+        const d = Math.abs(points[i] - value)
+        if (d < best) { best = d; target = i }
+    }
+    return target
+}
+
+export function useDrag({wrapper, translate, isDragging, snaps, maxTranslate, column, onStart, onSettle}) {
     const moved = ref(false)
     let startX = 0, startY = 0, startTranslate = 0, pointerId = null
     let axis = null
@@ -55,17 +64,23 @@ export function useDrag({wrapper, translate, isDragging, slideStep, maxTranslate
         axis = null
 
         if (wasDragging) {
-            const step = slideStep.value
-            if (!step) { onSettle?.(0); return }
+            const points = snaps?.value ?? []
+            if (points.length < 2) { onSettle?.(0); return }
 
-            const base = Math.round(-startTranslate / step)
-            const moved = (startTranslate - translate.value) / step
+            const pos = -translate.value
+            const startPos = -startTranslate
+            const base = nearest(points, startPos)
+            let target = nearest(points, pos)
 
-            let target = Math.round(-translate.value / step)
-
+            // лёгкий флик: даже если ближайшая точка — стартовая,
+            // сдвиг больше доли локального шага должен пролистнуть на одну карточку
             if (target === base) {
-                if (moved > SWIPE_THRESHOLD) target = base + 1
-                else if (moved < -SWIPE_THRESHOLD) target = base - 1
+                const dir = pos - startPos
+                const nextI = dir > 0 ? base + 1 : base - 1
+                if (nextI >= 0 && nextI < points.length) {
+                    const localStep = Math.abs(points[nextI] - points[base]) || 1
+                    if (Math.abs(dir) > SWIPE_THRESHOLD * localStep) target = nextI
+                }
             }
 
             onSettle?.(target)
