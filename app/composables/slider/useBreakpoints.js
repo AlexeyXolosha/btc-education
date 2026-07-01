@@ -1,5 +1,3 @@
-import {computed, useId} from 'vue'
-
 export function useBreakpoints(props) {
     const uid = useId()
 

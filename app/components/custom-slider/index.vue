@@ -84,4 +84,4 @@ const {
 } = useSlider(props, emit);
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" src="./sass/custom-swiper.scss" scoped></style>

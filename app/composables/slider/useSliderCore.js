@@ -64,7 +64,6 @@ export function useSliderCore(wrapper, props, emit) {
         const wrapRect = el.getBoundingClientRect()
         const base = isColumn ? wrapRect.top : wrapRect.left
 
-        // субпиксельные координаты каждой карточки — без накопления ошибки округления
         const points = [...el.children].map((c) => {
             const r = c.getBoundingClientRect()
             return (isColumn ? r.top : r.left) - base
@@ -83,7 +82,6 @@ export function useSliderCore(wrapper, props, emit) {
 
         maxTranslate.value = Math.max(0, full - view)
 
-        // оставляем только карточки, которые не заходят за конец, и добавляем ровный край
         const list = points.filter((p) => p < maxTranslate.value - 0.5)
         list.push(maxTranslate.value)
         snaps.value = list.length ? list : [0]

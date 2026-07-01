@@ -72,8 +72,6 @@ export function useDrag({wrapper, translate, isDragging, snaps, maxTranslate, co
             const base = nearest(points, startPos)
             let target = nearest(points, pos)
 
-            // лёгкий флик: даже если ближайшая точка — стартовая,
-            // сдвиг больше доли локального шага должен пролистнуть на одну карточку
             if (target === base) {
                 const dir = pos - startPos
                 const nextI = dir > 0 ? base + 1 : base - 1
